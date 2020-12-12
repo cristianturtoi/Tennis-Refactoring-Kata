@@ -1,3 +1,4 @@
+import java.util.Objects;
 
 public class TennisGame2 implements TennisGame
 {
@@ -6,12 +7,12 @@ public class TennisGame2 implements TennisGame
     
     public String P1res = "";
     public String P2res = "";
-    private String player1Name;
-    private String player2Name;
+    private PlayerGame2 playerGame21;
+    private PlayerGame2 playerGame22;
 
     public TennisGame2(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
+        this.playerGame21 = new PlayerGame2(player1Name);
+        this.playerGame22 = new PlayerGame2(player2Name);
     }
 
     public String getScore(){
@@ -28,7 +29,7 @@ public class TennisGame2 implements TennisGame
         }
         if (P1point==P2point && P1point>=3)
             score = "Deuce";
-        
+
         if (P1point > 0 && P2point==0)
         {
             if (P1point==1)
@@ -37,7 +38,7 @@ public class TennisGame2 implements TennisGame
                 P1res = "Thirty";
             if (P1point==3)
                 P1res = "Forty";
-            
+
             P2res = "Love";
             score = P1res + "-" + P2res;
         }
@@ -53,7 +54,7 @@ public class TennisGame2 implements TennisGame
             P1res = "Love";
             score = P1res + "-" + P2res;
         }
-        
+
         if (P1point>P2point && P1point < 4)
         {
             if (P1point==2)
@@ -78,7 +79,7 @@ public class TennisGame2 implements TennisGame
                 P1res="Thirty";
             score = P1res + "-" + P2res;
         }
-        
+
         if (P1point > P2point && P2point >= 3)
         {
             score = "Advantage player1";
@@ -99,37 +100,49 @@ public class TennisGame2 implements TennisGame
         }
         return score;
     }
-    
-    public void SetP1Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
-            P1Score();
-        }
-            
-    }
-    
-    public void SetP2Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
-            P2Score();
-        }
-            
-    }
-    
+
     public void P1Score(){
         P1point++;
+        playerGame21.setPoint(playerGame21.getScore() + 1);
     }
     
     public void P2Score(){
         P2point++;
+        playerGame22.setPoint(playerGame22.getScore() + 1);
     }
 
-    public void wonPoint(String player) {
-        if (player == "player1")
+    public void wonPoint(Player player) {
+        if (Objects.equals(player.getName(), "player1")) {
             P1Score();
-        else
+        } else {
             P2Score();
+        }
+    }
+
+    static class PlayerGame2 implements Player {
+        private final String name;
+        private int point;
+
+        PlayerGame2(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public int getScore() {
+            return point;
+        }
+
+        @Override
+        public void incrementScore() {
+
+        }
+
+        public void setPoint(int point) {
+            this.point = point;
+        }
     }
 }
